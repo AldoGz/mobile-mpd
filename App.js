@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
@@ -10,25 +10,19 @@ export default function App() {
     apellido: "",
     fechaNacimiento: "",
   });
+  const [active, setActive] = useState(false);
 
-  const handlerChange = ({ target }, name) => {
-    const { value } = target;
+  const handlerChange = (value,name) => {
     const obj = {
       ...body,
-      [name]: value,
+      [name]: value
     };
     setBody(obj);
-  };
-  const handlerChangeDate = (date) => {
-    const obj = {
-      ...body,
-      fechaNacimiento: date,
-    };
-    setBody(obj);
-  };
+  }; 
 
   const handlerRegistrar = async () => {
-    try {      
+    try {   
+
       const { nombre, apellido, fechaNacimiento } = body;
       if (nombre == "" || apellido == "" || fechaNacimiento == "" ) {
         Alert.alert("Necesita llenar todos los campos.");
@@ -57,6 +51,8 @@ export default function App() {
         return;
       } 
 
+      setActive(true);
+
       const { data , status} = await axios.post("https://backend-node-mdp.herokuapp.com/api/cliente/add",body);
 
       if( status == 200 ){
@@ -67,6 +63,7 @@ export default function App() {
           apellido: "",
           fechaNacimiento: "",
         });
+        setActive(false);
       }
     } catch (error) {
       console.error(error);
@@ -75,19 +72,18 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>{JSON.stringify(body)}</Text>
       <Text>Nombre de cliente</Text>
       <TextInput
         style={styles.input}
         value={body.nombre}
-        onChange={(event) => handlerChange(event, "nombre")}
+        onChangeText={(text) => handlerChange(text,"nombre")}
       />
       <Text>Apellido</Text>
       <TextInput
         name="apellido"
         style={styles.input}
         value={body.apellido}
-        onChange={(event) => handlerChange(event, "apellido")}
+        onChangeText={(text) => handlerChange(text,"apellido")}
       />
       <Text>Fecha de nacimiento</Text>
       <TextInputMask
@@ -98,9 +94,9 @@ export default function App() {
         }}
         placeholder="YYYY-MM-DD"
         value={body.fechaNacimiento}
-        onChangeText={(text) => handlerChangeDate(text)}
+        onChangeText={(text) => handlerChange(text,"fechaNacimiento")}
       />
-      <Button title="Agregar Cliente" onPress={handlerRegistrar} />
+      <Button disable={active} title="Agregar Cliente" onPress={handlerRegistrar} />
       <StatusBar style="auto" />
     </View>
   );
