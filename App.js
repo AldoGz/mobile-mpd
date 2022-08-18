@@ -32,8 +32,13 @@ export default function App() {
       
       const { nombre, apellido, fechaNacimiento } = body;
       console.log(nombre, apellido, fechaNacimiento);
-      if (nombre == "" || apellido == "" || fechaNacimiento == "") {
+      if (nombre == "" || apellido == "" || fechaNacimiento == "" ) {
         Alert.alert("Necesita llenar todos los campos.");
+        return;
+      }
+
+      if ( fechaNacimiento.length < 10) {
+        Alert.alert("Esta fecha es invalida.");
         return;
       }
 
@@ -96,7 +101,6 @@ export default function App() {
         value={body.fechaNacimiento}
         onChangeText={(text) => handlerChangeDate(text)}
       />
-
       <Button title="Agregar Cliente" onPress={handlerRegistrar} />
       <StatusBar style="auto" />
     </View>
