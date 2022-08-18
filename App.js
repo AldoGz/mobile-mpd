@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
@@ -28,10 +28,8 @@ export default function App() {
   };
 
   const handlerRegistrar = async () => {
-    try {
-      
+    try {      
       const { nombre, apellido, fechaNacimiento } = body;
-      console.log(nombre, apellido, fechaNacimiento);
       if (nombre == "" || apellido == "" || fechaNacimiento == "" ) {
         Alert.alert("Necesita llenar todos los campos.");
         return;
@@ -59,7 +57,7 @@ export default function App() {
         return;
       } 
 
-      const { data , status} = await axios.post("https://backend-node-mdp.herokuapp.com/api/cliente",body);
+      const { data , status} = await axios.post("https://backend-node-mdp.herokuapp.com/api/cliente/add",body);
 
       if( status == 200 ){
         const { message } = data;
@@ -77,6 +75,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text>{JSON.stringify(body)}</Text>
       <Text>Nombre de cliente</Text>
       <TextInput
         style={styles.input}

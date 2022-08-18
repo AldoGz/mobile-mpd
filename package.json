@@ -23,7 +23,8 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-masked-text": "^1.13.0",
     "react-native-modal-datetime-picker": "^13.1.2",
-    "react-native-web": "~0.18.7"
+    "react-native-web": "~0.18.7",
+    "expo-updates": "~0.14.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
